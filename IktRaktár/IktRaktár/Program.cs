@@ -18,12 +18,8 @@ namespace IktRaktár
             Console.WriteLine("Raktár rendszer - fejlesztési alap");
 
             Order order = new Order();
-            order.AddItem(storage.FindById(1), 3);
-            order.AddItem(storage.FindById(2), 2);
-
-            order.SaveToFile("order_1.txt");
-
-
+            order.AddItem(storage.FindById(2), 3);
+            order.AddItem(storage.FindById(3), 1);
 
             bool running = true;
             while (running)
@@ -74,5 +70,6 @@ namespace IktRaktár
                 }
             }
         }
+
     }
 }

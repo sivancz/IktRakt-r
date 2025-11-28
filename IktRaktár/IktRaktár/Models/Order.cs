@@ -54,7 +54,5 @@ namespace IktRaktár.Models
 
             File.WriteAllLines(path, lines);
         }
-
-
     }
 }

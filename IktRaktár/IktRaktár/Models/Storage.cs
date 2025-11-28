@@ -8,28 +8,35 @@ using System.Threading.Tasks;
 
 namespace iktRaktar.Models
 {
-    internal class Storage : ISearchable<Product>
+    private List<Product> items;
+
+    public void Add(Product product)
     {
-        private List<Product> items = new List<Product>();
+        items ??= new List<Product>();
+        items.Add(product);
+    }
 
-        public void Add(Product product)
-        {
-            items.Add(product);
-        }
+    public IEnumerable<Product> FindAll(string name)
+    {
+        return items?.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase)) ?? Enumerable.Empty<Product>();
+    }
 
+    public Product? FindById(int id)
+    {
+        return items?.FirstOrDefault(p => p.Id == id);
+    }
 
         public IEnumerable<Product> FindAll(string name)
         {
-            List<Product> searchedProducts = new List<Product>();
-            foreach (Product product in items)
+            foreach (var item in order.Items)
             {
-                if (product.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase))
+                var product = storage.FindById(item.Product.Id);
+                if (product == null || product.Quantity < item.Quantity)
                 {
-                    searchedProducts.Add(product);
+                    Console.WriteLine($"Hiba: Nincs elegendő készlet a(z) '{item.Product.Name}' termékből. Igényelt: {item.Quantity}, Elérhető: {product?.Quantity ?? 0}");
+                    return false;
                 }
             }
-            return searchedProducts;
-        }
 
         public Product? FindById(int Id)
         {
@@ -70,6 +77,10 @@ namespace iktRaktar.Models
             }
         }
 
+            Console.WriteLine($"Rendelés feldolgozva #{order.Id}");
+            Console.WriteLine($"    Levont készlet: {string.Join(", ", levontKeszlet)}");
+            return true;
+        }
     }
 
 
