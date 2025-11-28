@@ -8,5 +8,7 @@ namespace IktRaktár.Models.Interfaces
 {
     internal interface IStorable
     {
+        string Name { get; }
+        int Quantity { get; set; }
     }
 }
