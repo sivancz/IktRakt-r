@@ -8,7 +8,47 @@ namespace IktRaktár.Models.Interfaces
 {
     internal interface ISearchable<T>
     {
-        T? FindById(int id);
-        IEnumerable<T> FindAll(string name);
+        public interface ISearchable
+
+        {
+
+            int id
+
+            {
+
+                get; set;
+
+            }
+
+            string name
+
+            {
+
+                get; set;
+
+            }
+
+
+        }
+
+        /*Keresés ID alapján*/
+
+        public static ISearchable FindByID(int id, List<ISearchable> list)
+
+        {
+
+            return list.FirstOrDefault(item => item.id == id);
+
+        }
+
+        /*Keresés név részlet alapján*/
+
+        public static List<ISearchable> FindByName(string namePart, List<ISearchable> list)
+
+        {
+
+            return list.Where(item => item.name.Contains(namePart, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        }
     }
 }

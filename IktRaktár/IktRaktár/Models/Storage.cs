@@ -16,10 +16,11 @@ namespace iktRaktar.Models
         items.Add(product);
     }
 
-    public IEnumerable<Product> FindAll(string name)
-    {
-        return items?.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase)) ?? Enumerable.Empty<Product>();
-    }
+        public void Add(Product product)
+        {
+            items.Add(product);
+        }
+       
 
     public Product? FindById(int id)
     {
@@ -83,6 +84,7 @@ namespace iktRaktar.Models
         }
     }
 
-
-
+    internal interface ISearchable<T>
+    {
+    }
 }
