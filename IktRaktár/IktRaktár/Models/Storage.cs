@@ -1,11 +1,12 @@
 ﻿using IktRaktár.Models.Interfaces;
+using IktRaktár.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IktRaktár.Models
+namespace iktRaktar.Models
 {
     internal class Storage : ISearchable<Product>
     {
@@ -17,7 +18,6 @@ namespace IktRaktár.Models
         }
 
 
-        
         public IEnumerable<Product> FindAll(string name)
         {
             List<Product> searchedProducts = new List<Product>();
@@ -31,18 +31,47 @@ namespace IktRaktár.Models
             return searchedProducts;
         }
 
-        public Product? FindById(int id)
+        public Product? FindById(int Id)
         {
             foreach (var item in items)
             {
-                if (item.Id == id) return item;
-
+                if (item.Id == Id) return item;
             }
             return null;
         }
 
+        public void IncreaseQuantity(int id, int amount)
+        {
+            Product? product = FindById(id);
+            if (product != null)
+            {
+                product.Quantity += amount;
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen termék!");
+            }
+        }
+        public void DecreaseQuantity(int id, int amount)
+        {
+            Product? product = FindById(id);
+            if (product != null)
+            {
+                product.Quantity -= amount;
+
+                if (product.Quantity < 0)
+                {
+                    product.Quantity = 0;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen termék!");
+            }
+        }
 
     }
+
 
 
 }
