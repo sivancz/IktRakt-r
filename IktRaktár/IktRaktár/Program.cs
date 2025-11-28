@@ -1,57 +1,98 @@
 ﻿using IktRaktár.Models;
+using System;
+using System.Collections;
+using System.Text;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace IktRaktár
 {
-    /*CsapatTag 2 - Kereső és listázó funkciók []
-- 1 - Keresés ID alapján
-- 2 - Keresés név részlet alapján
-- 3 - Teljes lista formázott megjelenítése
-    A keresések során az ISearchable-t kell használni.
-
-    Táblázatos listázás:
-    ID | Név        | Készlet
-    ----------------------------
-    1  | Ceruza     | 100
-    2  | Toll       | 50
-        */
     internal class Program
     {
         static void Main(string[] args)
-        {   /*ISearchable interface*/
-            public interface ISearchable
         {
-            int id
+            Storage storage = new Storage();
+
+            storage.Add(new Product(1, "Ceruza", 100));
+            storage.Add(new Product(2, "Toll", 50));
+
+            while (true)
             {
-                get; set;
+                Console.WriteLine("\nVálassz funkciót:");
+                Console.WriteLine("1 - Teljes lista");
+                Console.WriteLine("2 - Keresés ID alapján");
+                Console.WriteLine("3 - Keresés név részlet alapján");
+                Console.WriteLine("0 - Kilépés");
+                Console.Write("Választásod: ");
+                string input = Console.ReadLine();
+
+                if (input == "1")
+                {
+                    Console.WriteLine("Teljes lista:");
+                    PrintTable(storage.FindAll(string.Empty)); 
+                }
+                else if (input == "2")
+                {
+                    Console.Write("Add meg az ID-t: ");
+                    string idInput = Console.ReadLine();
+                    if (int.TryParse(idInput, out int keresettId))
+                    {
+                        var found = storage.FindById(keresettId);
+                        if (found != null)
+                        {
+                            Console.WriteLine("Keresett termék:");
+                            PrintTable(new List<Product> { found });
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nem található ilyen ID.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Érvénytelen ID.");
+                    }
+                }
+                else if (input == "3")
+                {
+                    Console.Write("Add meg a név részletet: ");
+                    string namePart = Console.ReadLine();
+                    var results = storage.FindAll(namePart);
+                    if (results.Any())
+                    {
+                        Console.WriteLine("Találatok:");
+                        PrintTable(results);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nincs találat.");
+                    }
+                }
+                else if (input == "0")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Érvénytelen választás.");
+                }
             }
-            string name
-            {
-                get; set;
-            }
 
-
-        }
-        /*Keresés ID alapján*/
-        public static ISearchable FindByID(int id, List<ISearchable> list)
-        {
-           return list.FirstOrDefault(item => item.id == id);
-        }
-        /*Keresés név részlet alapján*/
-        public static List<ISearchable> FindByName(string namePart, List<ISearchable> list)
-        {
-            return list.Where(item => item.name.Contains(namePart)).ToList();
+            Console.WriteLine("Kilépéshez nyomj egy gombot...");
+            Console.ReadKey();
         }
 
-            
-        /*Teljes lista formázott megjelenítése*/
-        public static void PrintTable(List<ISearchable> list)
+        public static void PrintTable(IEnumerable<Product> list)
         {
             Console.WriteLine("ID | Név        | Készlet");
             Console.WriteLine("----------------------------");
             foreach (var item in list)
             {
-                Console.WriteLine($"{item.id}  | {item.name} | {item.stock}");
+                if (item is Product product)
+                {
+                    Console.WriteLine($"{product.Id,-2} | {product.Name,-10} | {product.Quantity}");
+                }
             }
-        }   
+        }
     }
 }

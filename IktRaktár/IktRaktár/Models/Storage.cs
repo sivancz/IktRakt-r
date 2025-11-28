@@ -15,9 +15,9 @@ namespace IktRaktár.Models
         {
             items.Add(product);
         }
+       
 
 
-        
         public IEnumerable<Product> FindAll(string name)
         {
             List<Product> searchedProducts = new List<Product>();
@@ -44,5 +44,7 @@ namespace IktRaktár.Models
 
     }
 
-
+    internal interface ISearchable<T>
+    {
+    }
 }
