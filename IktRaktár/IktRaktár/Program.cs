@@ -1,4 +1,5 @@
-﻿using IktRaktár.Models;
+﻿using iktRaktar.Models;
+using IktRaktár.Models;
 
 namespace IktRaktár
 {
@@ -20,7 +21,54 @@ namespace IktRaktár
             order.AddItem(storage.FindById(2), 3);
             order.AddItem(storage.FindById(3), 1);
 
-            Storage.OrderProcessor.ProcessOrder(order, storage);
+            bool running = true;
+            while (running)
+            {
+                Console.WriteLine();
+                Console.WriteLine("4 - készlet növlés");
+                Console.WriteLine("5 - készlet csökkentés");
+                Console.WriteLine("0 - kilépés");
+                Console.WriteLine("Választás");
+
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "4":
+                        Console.Write("Ter,ék ID: ");
+                        int IdInc = int.Parse(Console.ReadLine());
+
+                        Console.Write("Növelés mértéke: ");
+                        int amountInc = int.Parse(Console.ReadLine());
+
+                        storage.IncreaseQuantity(IdInc, amountInc);
+                        var pInc = storage.FindById(IdInc);
+                        if (pInc != null)
+                        {
+                            Console.WriteLine($"{pInc.Id} {pInc.Name} új mennyiség: {pInc.Quantity}");
+                        }
+                        break;
+
+                    case "5":
+                        Console.Write("Ter,ék ID: ");
+                        int idDec = int.Parse(Console.ReadLine());
+
+                        Console.Write("Csökkentés mértéke: ");
+                        int amountDec = int.Parse(Console.ReadLine());
+
+                        storage.DecreaseQuantity(idDec, amountDec);
+                        var pDec = storage.FindById(idDec);
+                        if (pDec != null)
+                        {
+                            Console.WriteLine($"{pDec.Id} {pDec.Name} új mennyiség: {pDec.Quantity}");
+                        }
+                        break;
+
+                    case "0":
+                        running = false;
+                        break;
+
+                }
+            }
         }
 
     }

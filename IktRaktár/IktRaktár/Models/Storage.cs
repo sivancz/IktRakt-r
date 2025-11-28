@@ -1,7 +1,12 @@
 ﻿using IktRaktár.Models.Interfaces;
 using IktRaktár.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-internal class Storage : ISearchable<Product>
+namespace iktRaktar.Models
 {
     private List<Product> items;
 
@@ -21,9 +26,7 @@ internal class Storage : ISearchable<Product>
         return items?.FirstOrDefault(p => p.Id == id);
     }
 
-    internal static class OrderProcessor
-    {
-        public static bool ProcessOrder(Order order, Storage storage)
+        public IEnumerable<Product> FindAll(string name)
         {
             foreach (var item in order.Items)
             {
@@ -35,18 +38,51 @@ internal class Storage : ISearchable<Product>
                 }
             }
 
-            var levontKeszlet = new List<string>();
-            foreach (var item in order.Items)
+        public Product? FindById(int Id)
+        {
+            foreach (var item in items)
             {
-                var product = storage.FindById(item.Product.Id);
-                product.Quantity -= item.Quantity;
-                levontKeszlet.Add($"#{product.Id} {product.Name} (-{item.Quantity})");
+                if (item.Id == Id) return item;
             }
+            return null;
+        }
+
+        public void IncreaseQuantity(int id, int amount)
+        {
+            Product? product = FindById(id);
+            if (product != null)
+            {
+                product.Quantity += amount;
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen termék!");
+            }
+        }
+        public void DecreaseQuantity(int id, int amount)
+        {
+            Product? product = FindById(id);
+            if (product != null)
+            {
+                product.Quantity -= amount;
+
+                if (product.Quantity < 0)
+                {
+                    product.Quantity = 0;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen termék!");
+            }
+        }
 
             Console.WriteLine($"Rendelés feldolgozva #{order.Id}");
             Console.WriteLine($"    Levont készlet: {string.Join(", ", levontKeszlet)}");
             return true;
         }
     }
+
+
 
 }
