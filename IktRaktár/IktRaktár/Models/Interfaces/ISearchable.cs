@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace IktRaktár.Models.Interfaces
 {
-    internal interface ISearchable
+    internal interface ISearchable<T>
     {
+        T? FindById(int id);
+        IEnumerable<T> FindAll(string name);
     }
 }
