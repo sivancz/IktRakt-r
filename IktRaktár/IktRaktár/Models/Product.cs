@@ -9,11 +9,11 @@ namespace IktRaktár.Models
 {
     internal class Product : IIdentifiable, IStorable
     {
-        public int Id { get; } 
+        public int Id { get; }
 
         public string Name { get; }
 
-        public int Quantity { get ; set ; }
+        public int Quantity { get; set; }
 
         public Product(int id, string name, int qty)
         {

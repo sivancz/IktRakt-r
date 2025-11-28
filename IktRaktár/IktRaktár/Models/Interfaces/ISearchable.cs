@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IktRaktár.Models.Interfaces
 {
-    internal interface ISearchable
+    internal interface ISearchable<T>
     {
         public interface ISearchable
 
